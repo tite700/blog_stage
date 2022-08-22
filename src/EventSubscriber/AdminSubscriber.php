@@ -32,9 +32,10 @@ class AdminSubscriber implements EventSubscriberInterface
     {
         $entity = $event->getEntityInstance();
 
-        if (!$event instanceof TimestampedInterface) {
+        if (!$entity instanceof TimestampedInterface) {
             return ;
         }
         $entity->setUpdatedAt(new \DateTime());
+
     }
 }
