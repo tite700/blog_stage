@@ -6,16 +6,17 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 class App {
-    colorSchemeLocalStorageKey;
+    // colorSchemeLocalStorageKey;
 
     constructor() {
-        this.colorSchemeLocalStorageKey = 'blog/colorScheme';
+        // this.colorSchemeLocalStorageKey = 'blog/colorScheme';
 
-        this.createColorSchemeSelector();
+        // this.createColorSchemeSelector();
         this.enableDropdowns();
+        this.handleCommentForm()
     }
 
-    createColorSchemeSelector() {
+     /* createColorSchemeSelector() {
         if (null === document.querySelector('.dropdown-appearance')) {
             return;
         }
@@ -43,12 +44,35 @@ class App {
                 selector.classList.add('active');
             });
         });
-    }
+    } */
 
     enableDropdowns() {
         const dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
         dropdownElementList.map(function (dropdownToggleEl) {
             return new Dropdown(dropdownToggleEl);
         });
+    }
+
+    handleCommentForm() {
+
+        const commentForm = document.querySelector('form.comment-form')
+
+        if (null == commentForm) {
+            return;
+        }
+
+        commentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const response = await fetch('/ajax/comments', {
+                method: 'POST',
+                body: new FormData(e.target)
+            });
+
+            if (!response.ok) {return ;}
+
+            const json = await response.json();
+
+        })
     }
 }
